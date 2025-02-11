@@ -1,0 +1,181 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Faster+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+body{
+    background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20201219/pngtree-valentines-day-blue-dark-background-love-glitter-image_511255.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+}
+*{
+    font-family: "Ubuntu", serif;
+}
+.bg-white{
+  opacity: inherit !important;
+}
+.text-right{
+  text-align: right;
+}
+.h-bg{
+  background: #f8f9fa7d !important;
+}
+.logo{
+    font-family: "Bungee Inline", serif;
+    font-size: 30px;
+}
+.spl-text{
+    font-family: "Great Vibes", serif;
+    font-size: 26px;
+    margin-right: 5px;
+}
+.navbar-brand{
+    color: #fff !important;
+}
+.navbar {
+    padding: 3px 10px !important;
+    background-color: #f8f9fa7d !important;
+}
+.bg-light {
+    --bs-bg-opacity: 1;
+    background-color: #f8f9fa7d !important;
+}
+.heading{
+    border-bottom: 2px solid #fff;
+    width: fit-content;
+    margin: auto;
+    color: #fff;
+}
+img.Pimg {
+    /* background: #fff; */
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    padding: 5px;
+    border: 3px solid #fff;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+}
+.selected-profile {
+    margin-top: 2.7rem;
+}
+.Simg{
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    padding: 5px;
+    border: 2px solid gray;
+    background: #fff;
+}
+.fs-12{
+    font-size: 12px;
+}
+.ml-auto{
+    margin-left: auto;
+}
+.fa-microphone-lines {
+    font-size: 25px;
+    cursor: pointer;
+    color: #fff;
+}
+.start-btn {
+  background: #8b7a9f;
+  padding: 5px 20px;
+  border-radius: 10px;
+  color: #fff;
+  border: 1px solid;
+  letter-spacing: 0.8px;
+}
+/* transcription styles start here */
+.chat-container {
+    backdrop-filter: blur(35.9099998474px);
+    background: hsla(0, 0%, 5%, .302);
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #fff;
+  }
+  
+  .chat-box {
+    padding: 15px;
+    height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .message {
+    max-width: 80%;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    border-radius: 20px;
+    display: block;
+    font-size: 14px;
+    width: max-content;
+  }
+  .message p{
+    margin-bottom: 0;
+  }
+  .left {
+    background-color: #f1f0f0;
+    margin-left: 10px;
+    text-align: left;
+  }
+  
+  .right {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto;
+    margin-right: 10px;
+    text-align: right;
+  }
+  
+  .input-box {
+    display: flex;
+    padding: 10px;
+    /* background-color: #f1f1f1; */
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 10px 10px;
+  }
+  
+  .input-box input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+  
+  .input-box button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .input-box button:hover {
+    background-color: #0056b3;
+  }
+
+
+
+  /* responsive styles starts here */
+  @media screen and (max-width: 1000px) {
+    .Pimg{
+        width: 100px;
+        margin-bottom: 1rem;
+        height: 100px;
+    }
+    .selected-profile {
+        margin-top: 1rem !important;
+    }
+    .col-9, .col-3{
+        flex: 100% !important;
+        width: 100% !important;
+    }
+  }

@@ -1,0 +1,46 @@
+{
+  "extends": "./edu-demo-tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "experimentalDecorators": false,
+    "module": "esnext",
+    "paths": {
+      "stream": [ "./node_modules/stream-browserify" ]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "webworker"
+    ],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "src",
+    "electron/electron-wait-react.js",
+    "electron/main.js"
+, "src/service-worker.js"  ],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false
+      }
+    ]
+  }
+}
