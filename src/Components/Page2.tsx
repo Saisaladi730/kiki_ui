@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getVoiceText } from '../ApiServices/Apiservices';
 import axios from 'axios';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -12,23 +12,53 @@ function Page2() {
     const [chatMsg, setChatMsg] = useState([{ uservoice: '', airesp: '' }]);
     const [aiChat, setAiChat] = useState<string[]>([])
     const [selectedVoice,setSelectedVoice] = useState('');
+    const [startAi,setStartAi] = useState('');
+    const ref : any = useRef(false);
+    const [FirstImg,setFirstImg] = useState('')
 
-
-    let arr: string[] = []
-
-    useEffect(()=>{
-              console.log(selectedVoice,'selected voice')
-    },[selectedVoice])
-
-
+    function makeRefTrue()
+    {
+        ref.current = true;
+    }
 
     useEffect(() => {
         setSelectedPhoto("images/p1.png")
+        setSelectedVoice('alloy')
     }, [])
+
+    useEffect(()=>{
+        if(startAi != '')
+        {
+            const handleAiResponse = async (transcription_text: any) => {
+                try {
+                    const response = await axios.post("http://localhost:8000/process-transcription", transcription_text);
+                    //setTranscription(response.data.transcription);  // Update UI with transcription
+                    // let transcription = {
+                    //     text : response.data,
+                    //     voice: 'alloy'
+                    // }
+                    setChatMsg([...chatMsg, { airesp: response.data, uservoice: '' }]);
+                    // const response1 = await axios.post("http://localhost:8000/generate_speech", transcription);
+                    SpeechRecognition.startListening({ continuous: true });
+                } catch (error) {
+                    console.error("Error fetching transcription:", error);
+                }
+            };
+            if (startAi != '') {
+                let transcription = {
+                    transcription_text: '',
+                    voice: selectedVoice != '' ? selectedVoice : 'alloy'
+                }
+                handleAiResponse(transcription)
+            }    
+        }
+    },[startAi])
 
     useEffect(() => {
         if (finalTranscript != "") {
+            console.log(finalTranscript,'final transcript')
             setChatMsg([...chatMsg, { uservoice: finalTranscript, airesp: '' }]);
+            resetTranscript()
         }
         console.log(finalTranscript, 'transcript')
     }, [finalTranscript])
@@ -36,6 +66,7 @@ function Page2() {
     useEffect(() => {
         const handleAiResponse = async (transcription_text: any) => {
             try {
+                SpeechRecognition.startListening({ continuous: false });
                 const response = await axios.post("http://localhost:8000/process-transcription", transcription_text);
                 //setTranscription(response.data.transcription);  // Update UI with transcription
                 // let transcription = {
@@ -44,11 +75,12 @@ function Page2() {
                 // }
                 setChatMsg([...chatMsg, { airesp: response.data, uservoice: '' }]);
                // const response1 = await axios.post("http://localhost:8000/generate_speech", transcription);
+               SpeechRecognition.startListening({ continuous: true });
             } catch (error) {
                 console.error("Error fetching transcription:", error);
             }
         };
-        if (chatMsg[chatMsg.length - 1].uservoice != '') {
+        if (chatMsg[chatMsg.length - 1].uservoice != '' && startAi !== '') {
             let transcription = {
                 transcription_text: chatMsg[chatMsg.length - 1].uservoice,
                 voice: selectedVoice != '' ? selectedVoice : 'alloy'
@@ -59,6 +91,7 @@ function Page2() {
 
 
     useEffect(() => {
+        debugger
         const handleAiResponse = async (transcription_text: any) => {
             try {
                 const response = await axios.post("http://localhost:8000/select_voices", transcription_text);
@@ -68,10 +101,11 @@ function Page2() {
                 console.error("Error fetching transcription:", error);
             }
         };
-        if (selectedVoice != '') {
+        if (selectedVoice != '' && startAi === '' && ref.current) {
             let transcription = {
                 voices : selectedVoice
             }
+            ref.current = true;
             handleAiResponse(transcription)
         }
     }, [selectedVoice])
@@ -97,21 +131,21 @@ function Page2() {
                                 <h2 className="heading">Select Voice</h2>
                             </div>
                             <div className="circle text-center">
-                            <img src="images/P1.png" className={ selectedVoice === "alloy" ? "Pimg bg-white" : "Pimg"} onClick={() => {setSelectedPhoto("images/P1.png");setSelectedVoice("alloy");}} />
+                            <img src="images/P1.png" className={ selectedVoice === "alloy" ? "Pimg bg-white" : "Pimg"} onClick={() => {setSelectedPhoto("images/P1.png");setSelectedVoice("alloy");makeRefTrue()}} />
                                 <span>
-                                {selectedVoice === "alloy" ?<img
+                                { selectedVoice === "alloy" ?<img
                                         src="images/heart.png"
                                         style={selectedVoice === "alloy" ? { width: '35px', position: 'absolute', marginLeft: '-3rem', marginTop: '-5px' } : undefined}
                                     /> : ''}
                                 </span>
-                                <img src="images/P2.png" className={ selectedVoice === "coral" ? "Pimg bg-white" : "Pimg"}   onClick={() => {setSelectedPhoto("images/P2.png");setSelectedVoice("coral");}} />
+                                <img src="images/P2.png" className={ selectedVoice === "coral" ? "Pimg bg-white" : "Pimg"}   onClick={() => {setSelectedPhoto("images/P2.png");setSelectedVoice("coral");makeRefTrue()}} />
                                 <span>
                                 {selectedVoice === "coral" ?<img
                                         src="images/heart.png"
                                         style={selectedVoice === "coral" ? { width: '35px', position: 'absolute', marginLeft: '-3rem', marginTop: '-5px' } : undefined}
                                     /> : ''}
                                 </span>
-                                <img src="images/P3.png" className={ selectedVoice === "sage" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P3.png");setSelectedVoice("sage");}} />
+                                <img src="images/P3.png" className={ selectedVoice === "sage" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P3.png");setSelectedVoice("sage");makeRefTrue()}} />
                                 <span>
 
                                     {selectedVoice === "sage" ?<img
@@ -119,21 +153,21 @@ function Page2() {
                                         style={selectedVoice === "sage" ? { width: '35px', position: 'absolute', marginLeft: '-3rem', marginTop: '-5px' } : undefined}
                                     /> : ''}
                                 </span>
-                                <img src="images/P4.png" className={ selectedVoice === "echo" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P4.png");setSelectedVoice("echo");}} />
+                                <img src="images/P4.png" className={ selectedVoice === "echo" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P4.png");setSelectedVoice("echo");makeRefTrue()}} />
                                 <span>
                                 {selectedVoice === "echo" ?<img
                                         src="images/heart.png"
                                         style={selectedVoice === "echo" ? { width: '35px', position: 'absolute', marginLeft: '-3rem', marginTop: '-5px' } : undefined}
                                     /> : ''}
                                 </span>
-                                <img src="images/P5.png" className={ selectedVoice === "onyx" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P5.png");setSelectedVoice("onyx");}} />
+                                <img src="images/P5.png" className={ selectedVoice === "onyx" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P5.png");setSelectedVoice("onyx");makeRefTrue()}} />
                                 <span>
                                 {selectedVoice === "onyx" ?<img
                                         src="images/heart.png"
                                         style={selectedVoice === "onyx" ? { width: '35px', position: 'absolute', marginLeft: '-3rem', marginTop: '-5px' } : undefined}
                                     /> : ''}
                                 </span>
-                                <img src="images/P6.png" className={ selectedVoice === "ash" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P6.png");setSelectedVoice("ash");}} />
+                                <img src="images/P6.png" className={ selectedVoice === "ash" ? "Pimg bg-white" : "Pimg"}  onClick={() => {setSelectedPhoto("images/P6.png");setSelectedVoice("ash");makeRefTrue()}} />
                                 <span>
                                 {selectedVoice === "ash" ?<img
                                         src="images/heart.png"
@@ -156,7 +190,7 @@ function Page2() {
                                 </span>
                             </div>
                             <div className="col-11 text-right">
-                            <button type="button" onClick={() => SpeechRecognition.startListening()} class="start-btn">START</button>
+                            <button type="button" onClick={() => {setStartAi('start')}} className="start-btn">START</button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +201,7 @@ function Page2() {
                                     <div className="chat-box">
                                         {
                                             chatMsg.map((c: any, index: any) => {
-                                                console.log(index, 'clnegth')
+                                                console.log(c.uservoice, 'uservoice')
                                                 return <>
                                                     <div className={c.uservoice != '' ? "message left" : "message right"}>
                                                         <p>{c.uservoice != null ? c.uservoice : ''}</p>
